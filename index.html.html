@@ -1,0 +1,260 @@
+<script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+
+<div class="min-h-screen p-4 md:p-8 font-sans bg-cover bg-center bg-fixed relative" 
+     style="background-image: url('https://images.unsplash.com/photo-1578575437130-527eed3abbec?auto=format&fit=crop&w=1920&q=80');">
+  
+  <div class="absolute inset-0 bg-slate-950/50 backdrop-blur-xs -z-10 fixed"></div>
+
+  <div class="max-w-4xl mx-auto space-y-6 relative z-10">
+    
+    <div class="bg-white/95 backdrop-blur-md p-6 rounded-2xl shadow-2xl border border-white/20 flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+      <div>
+        <h1 class="text-2xl font-bold text-gray-800">Dasbor Manajemen UMKM Digital</h1>
+        <p class="text-sm text-gray-500 mt-1">Solusi praktis kelola stok berbasis tren pasar dan hitung pajak usaha.</p>
+      </div>
+      
+      <div class="flex bg-gray-100 p-1 rounded-xl w-full md:w-auto shadow-inner">
+        <button onclick="bukaTab('tabStok')" id="btnTabStok" class="flex-1 md:flex-none px-4 py-2 text-sm font-bold rounded-lg transition cursor-pointer bg-white text-blue-600 shadow-sm">
+          📈 Stok & Tren
+        </button>
+        <button onclick="bukaTab('tabPajak')" id="btnTabPajak" class="flex-1 md:flex-none px-4 py-2 text-sm font-medium rounded-lg transition cursor-pointer text-gray-600 hover:text-gray-800">
+          💰 Kalkulator Pajak
+        </button>
+      </div>
+    </div>
+
+    <div id="tabStok" class="grid grid-cols-1 md:grid-cols-3 gap-6">
+      <div class="bg-white/95 backdrop-blur-md p-6 rounded-2xl shadow-2xl border border-white/20 md:col-span-1 space-y-4">
+        <div class="flex justify-between items-center border-b border-gray-100 pb-3">
+          <h2 class="text-sm font-bold text-gray-700 uppercase tracking-wider">Update Gudang</h2>
+          <a href="https://trends.google.co.id/trending?geo=ID" target="_blank" class="text-xs text-red-500 hover:underline font-semibold flex items-center gap-0.5">
+            Cek Google Trends →
+          </a>
+        </div>
+        <div>
+          <label class="block text-xs font-semibold text-gray-600 uppercase mb-1">Nama Produk</label>
+          <input type="text" id="namaBarang" placeholder="Contoh: Kopi Toraja" class="w-full px-3 py-2.5 border border-gray-300 rounded-xl text-sm focus:ring-2 focus:ring-blue-500 focus:outline-none bg-white">
+        </div>
+        <div>
+          <label class="block text-xs font-semibold text-gray-600 uppercase mb-1">Jumlah Stok Gudang</label>
+          <input type="number" id="jumlahStok" placeholder="Contoh: 15" class="w-full px-3 py-2.5 border border-gray-300 rounded-xl text-sm focus:ring-2 focus:ring-blue-500 focus:outline-none bg-white">
+        </div>
+        <div>
+          <label class="block text-xs font-semibold text-gray-600 uppercase mb-1">Status Tren Pasar</label>
+          <select id="statusTrend" class="w-full px-3 py-2.5 border border-gray-300 rounded-xl text-sm focus:ring-2 focus:ring-blue-500 focus:outline-none bg-white">
+            <option value="Tinggi">📈 Sedang Viral / Tren Naik</option>
+            <option value="Normal">📊 Permintaan Stabil</option>
+            <option value="Rendah">📉 Tren Turun / Sepi</option>
+          </select>
+        </div>
+        <button onclick="tambahBarang()" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2.5 rounded-xl text-sm transition cursor-pointer shadow-md">
+          Simpan ke Gudang
+        </button>
+      </div>
+
+      <div class="bg-white/95 backdrop-blur-md p-6 rounded-2xl shadow-2xl border border-white/20 md:col-span-2 space-y-4">
+        <h2 class="text-sm font-bold text-gray-700 uppercase tracking-wider border-b border-gray-100 pb-3">Monitor Perputaran Stok</h2>
+        <div class="overflow-x-auto">
+          <table class="w-full text-left text-sm">
+            <thead>
+              <tr class="text-gray-400 font-medium border-b border-gray-100">
+                <th class="pb-3">Nama Barang</th>
+                <th class="pb-3">Stok</th>
+                <th class="pb-3">Status Pasar</th>
+                <th class="pb-3 text-right">Rekomendasi Tindakan</th>
+              </tr>
+            </thead>
+            <tbody id="tabelStok" class="divide-y divide-gray-100 text-gray-700">
+              <tr>
+                <td class="py-3 font-medium">Parfum Kopi Bali</td>
+                <td class="py-3">5 pcs</td>
+                <td class="py-3"><span class="bg-red-100 text-red-800 px-2 py-0.5 rounded-md text-xs font-medium">📈 Tinggi</span></td>
+                <td class="py-3 text-right"><span class="bg-red-500 text-white px-2 py-1 rounded-lg text-xs font-bold animate-pulse">⚠️ BORONG SEKARANG (Viral & Stok Tipis)</span></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <div id="tabPajak" class="hidden max-w-md mx-auto bg-white/95 backdrop-blur-md rounded-2xl shadow-2xl border border-white/20 overflow-hidden">
+      <div class="bg-gradient-to-r from-slate-800 to-indigo-950 p-6 flex justify-between items-center relative overflow-hidden">
+        <div class="text-white z-10">
+          <h2 class="font-bold text-xl tracking-wide">Hitung PPh Final</h2>
+          <p class="text-xs text-indigo-300 mt-1">Sesuai Regulasi Pajak Terkini</p>
+        </div>
+        
+        <div class="relative w-28 h-20 flex items-center justify-center">
+          <svg class="absolute left-1 bottom-4 w-6 h-6 text-amber-400 animate-bounce" fill="currentColor" viewBox="0 0 20 20" style="animation-duration: 2s;"><circle cx="10" cy="10" r="8"></circle><path d="M10 5v10M7 8h6" stroke="#b45309" stroke-width="2" stroke-linecap="round"/></svg>
+          <svg class="absolute right-0 top-1 w-5 h-5 text-yellow-300 animate-bounce" fill="currentColor" viewBox="0 0 20 20" style="animation-duration: 1.5s;"><circle cx="10" cy="10" r="8"></circle><path d="M10 5v10M7 8h6" stroke="#b45309" stroke-width="2" stroke-linecap="round"/></svg>
+
+          <div class="animate-pulse duration-1000 transform hover:scale-110 transition">
+            <svg class="w-16 h-16 text-indigo-400" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M12 3v17M19 20H5" />
+              <path stroke-linecap="round" stroke-linejoin="round" d="M12 7l7 2M12 7L5 9" />
+              <path stroke-linecap="round" stroke-linejoin="round" d="M5 9l-2 6h4l-2-6M19 9l-2 6h4l-2-6" />
+            </svg>
+          </div>
+        </div>
+      </div>
+
+      <div class="p-6 space-y-4">
+        <div>
+          <label class="block text-xs font-semibold text-gray-600 uppercase mb-1">Jenis Entitas Usaha</label>
+          <select id="jenisUsaha" class="w-full px-3 py-2.5 border border-gray-300 rounded-xl text-sm bg-white focus:ring-2 focus:ring-indigo-500 focus:outline-none">
+            <option value="orang_pribadi">Orang Pribadi (Fasilitas Permanen & Bebas <500jt)</option>
+            <option value="pt_perorangan">PT Perorangan (Fasilitas Permanen)</option>
+            <option value="koperasi">Koperasi (Maksimal 4 Tahun)</option>
+          </select>
+        </div>
+        <div>
+          <label class="block text-xs font-semibold text-gray-600 uppercase mb-1">Omzet Bulan Ini (Rp)</label>
+          <input type="number" id="omzetBulan" placeholder="Contoh: 10000000" class="w-full px-3 py-2.5 border border-gray-300 rounded-xl font-medium focus:ring-2 focus:ring-indigo-500 focus:outline-none text-md bg-white">
+        </div>
+        <div>
+          <label class="block text-xs font-semibold text-gray-600 uppercase mb-1">Akumulasi Omzet Bulan Sebelumnya (Rp)</label>
+          <input type="number" id="omzetAkumulasi" placeholder="Isi 0 jika bulan Januari" class="w-full px-3 py-2.5 border border-gray-300 rounded-xl text-sm focus:ring-2 focus:ring-indigo-500 focus:outline-none bg-white">
+        </div>
+
+        <button onclick="hitungPajak2026()" class="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-3 rounded-xl text-sm transition cursor-pointer shadow-md">
+          Hitung Pajak Bulan Ini
+        </button>
+
+        <div id="hasilBoxPajak" class="hidden pt-4 border-t border-gray-100 space-y-2.5 text-sm">
+          <div class="flex justify-between"><span class="text-gray-500">Total Omzet Setahun:</span><span id="resTotalOmzet" class="font-semibold">Rp 0</span></div>
+          <div class="flex justify-between"><span class="text-gray-500">Masa Fasilitas:</span><span id="resFasilitas" class="font-semibold text-indigo-600">Permanen</span></div>
+          <div class="flex justify-between"><span class="text-gray-500">Status Batas:</span><span id="resStatusBebas" class="px-2 py-0.5 text-xs font-semibold rounded-full"></span></div>
+          <div class="flex justify-between items-center p-3 bg-rose-50 rounded-xl border border-rose-100 mt-2">
+            <span class="font-bold text-rose-800">Setoran PPh (0,5%):</span>
+            <span id="resPajak" class="text-xl font-black text-rose-600">Rp 0</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="p-4 bg-white/95 backdrop-blur-md border border-white/20 rounded-2xl text-xs text-gray-700 space-y-1 shadow-2xl">
+      <p class="font-bold text-gray-800">📋 Catatan Regulasi Bisnis Utama:</p>
+      <p>• **Aturan Gudang:** Pengadaan stok diatur ketat berdasarkan relasi kuantitas fisik riil gudang dengan tren pencarian Google.</p>
+      <p>• **Aturan PPN:** Pemerintah menetapkan PPN bertahan di angka **11%** (bukan 12%) demi menjaga kestabilan daya beli UMKM.</p>
+    </div>
+
+  </div>
+</div>
+
+<script>
+function bukaTab(tabId) {
+  document.getElementById('tabStok').classList.add('hidden');
+  document.getElementById('tabPajak').classList.add('hidden');
+  document.getElementById('btnTabStok').className = "flex-1 md:flex-none px-4 py-2 text-sm font-medium rounded-lg text-gray-600 hover:text-gray-800 cursor-pointer";
+  document.getElementById('btnTabPajak').className = "flex-1 md:flex-none px-4 py-2 text-sm font-medium rounded-lg text-gray-600 hover:text-gray-800 cursor-pointer";
+
+  document.getElementById(tabId).classList.remove('hidden');
+  if (tabId === 'tabStok') {
+    document.getElementById('btnTabStok').className = "flex-1 md:flex-none px-4 py-2 text-sm font-bold rounded-lg bg-white text-blue-600 shadow-sm cursor-pointer";
+  } else {
+    document.getElementById('btnTabPajak').className = "flex-1 md:flex-none px-4 py-2 text-sm font-bold rounded-lg bg-white text-indigo-600 shadow-sm cursor-pointer";
+  }
+}
+
+function tambahBarang() {
+  const nama = document.getElementById('namaBarang').value;
+  const stok = parseInt(document.getElementById('jumlahStok').value);
+  const trend = document.getElementById('statusTrend').value;
+
+  if(nama === "" || isNaN(stok)) {
+    alert("Mohon isi nama barang dan jumlah stok!");
+    return;
+  }
+
+  let rekomendasi = "";
+  let kelasRekomendasi = "";
+  let tagTrend = "";
+
+  if (trend === "Tinggi") {
+    tagTrend = `<span class="bg-red-100 text-red-800 px-2 py-0.5 rounded-md text-xs font-medium">📈 Tinggi</span>`;
+  } else if (trend === "Normal") {
+    tagTrend = `<span class="bg-gray-100 text-gray-700 px-2 py-0.5 rounded-md text-xs font-medium">Normal</span>`;
+  } else {
+    tagTrend = `<span class="bg-blue-100 text-blue-800 px-2 py-0.5 rounded-md text-xs font-medium">📉 Rendah</span>`;
+  }
+
+  if (stok <= 10 && trend === "Tinggi") {
+    rekomendasi = "⚠️ BORONG SEKARANG (Viral & Stok Tipis)";
+    kelasRekomendasi = "bg-red-500 text-white px-2 py-1 rounded-lg text-xs font-bold animate-pulse";
+  } else if (stok > 30 && trend === "Rendah") {
+    rekomendasi = "🛑 OBRAL / STOP BELI (Tren Turun)";
+    kelasRekomendasi = "bg-amber-100 text-amber-800 px-2 py-1 rounded-lg text-xs font-medium";
+  } else if (stok <= 5) {
+    rekomendasi = "🚨 Segera Re-stock (Stok Sekarat)";
+    kelasRekomendasi = "text-red-600 font-bold text-xs";
+  } else {
+    rekomendasi = "Stok Aman";
+    kelasRekomendasi = "text-green-600 font-medium text-xs";
+  }
+
+  const tabel = document.getElementById('tabelStok');
+  const barisBaru = document.createElement('tr');
+  barisBaru.className = "border-b border-gray-100";
+  barisBaru.innerHTML = `
+    <td class="py-3 font-medium">${nama}</td>
+    <td class="py-3">${stok} pcs</td>
+    <td class="py-3">${tagTrend}</td>
+    <td class="py-3 text-right"><span class="${kelasRekomendasi}">${rekomendasi}</span></td>
+  `;
+  tabel.appendChild(barisBaru);
+
+  document.getElementById('namaBarang').value = "";
+  document.getElementById('jumlahStok').value = "";
+}
+
+function hitungPajak2026() {
+  const jenisUsaha = document.getElementById('jenisUsaha').value;
+  const omzetBulan = parseFloat(document.getElementById('omzetBulan').value) || 0;
+  const omzetAkumulasi = parseFloat(document.getElementById('omzetAkumulasi').value) || 0;
+  
+  const totalOmzetSetahun = omzetAkumulasi + omzetBulan;
+  const batasBebasPajak = 500000000;
+  const tarifPajak = 0.005; 
+  
+  let omzetKenaPajak = 0;
+  let statusBebas = "";
+  let statusClass = "";
+  let teksFasilitas = "";
+
+  if (jenisUsaha === "orang_pribadi" || jenisUsaha === "pt_perorangan") {
+    teksFasilitas = "Permanen (PP 20/2026)";
+  } else if (jenisUsaha === "koperasi") {
+    teksFasilitas = "Maksimal 4 Tahun";
+  }
+
+  if (jenisUsaha === "orang_pribadi") {
+    if (totalOmzetSetahun <= batasBebasPajak) {
+      omzetKenaPajak = 0;
+      statusBebas = "Bebas Pajak (Omzet < 500jt)";
+      statusClass = "bg-green-100 text-green-800";
+    } else if (omzetAkumulasi < batasBebasPajak && totalOmzetSetahun > batasBebasPajak) {
+      omzetKenaPajak = totalOmzetSetahun - batasBebasPajak;
+      statusBebas = "Mulai Kena Pajak Bulan Ini";
+      statusClass = "bg-yellow-100 text-yellow-800";
+    } else {
+      omzetKenaPajak = omzetBulan;
+      statusBebas = "Kena Pajak Penuh";
+      statusClass = "bg-orange-100 text-orange-800";
+    }
+  } else {
+    omzetKenaPajak = omzetBulan;
+    statusBebas = "Tidak Ada Batas Bebas 500jt";
+    statusClass = "bg-red-100 text-red-800";
+  }
+
+  const totalPajak = omzetKenaPajak * tarifPajak;
+
+  document.getElementById('resTotalOmzet').innerText = "Rp " + totalOmzetSetahun.toLocaleString('id-ID');
+  document.getElementById('resFasilitas').innerText = teksFasilitas;
+  document.getElementById('resStatusBebas').innerText = statusBebas;
+  document.getElementById('resStatusBebas').className = `px-2 py-0.5 text-xs font-semibold rounded-full ${statusClass}`;
+  document.getElementById('resPajak').innerText = "Rp " + totalPajak.toLocaleString('id-ID');
+  
+  document.getElementById('hasilBoxPajak').classList.remove('hidden');
+}
+</script>
